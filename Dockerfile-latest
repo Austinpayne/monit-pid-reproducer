@@ -1,0 +1,12 @@
+FROM ubuntu:jammy
+
+ADD https://bitbucket.org/tildeslash/monit/downloads/monit-5.33.0-linux-arm64.tar.gz /tmp/
+RUN cd /tmp \
+    && tar xzf /tmp/monit-5.33.0-linux-arm64.tar.gz \
+    && cp monit-5.33.0/bin/monit /usr/bin/ \
+    && cp monit-5.33.0/conf/monitrc /etc/
+
+COPY entrypoint /usr/bin/entrypoint
+
+ENTRYPOINT ["entrypoint"]
+CMD ["monit", "-I", "-d", "15", "-c", "/etc/monitrc"]
